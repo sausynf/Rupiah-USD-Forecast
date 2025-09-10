@@ -1,0 +1,286 @@
+---
+title: "Tubes Time Series USD Januari 2018 - Desember 2023"
+author: "Gavrilla Claudia"
+date: "2024-06-04"
+output: html_document
+---
+
+```{r}
+# Import Library
+library(tseries)
+library(astsa)
+library(forecast)
+library(TSA)
+``` 
+
+```{r}
+# IMPORT DATASET
+library(readxl)
+USD <- read_excel("C:/Users/LENOVO/Downloads/Data FIX.xlsx") 
+USD
+```
+
+# PREPROCESSING DATA
+```{r}
+#Melihat dimensi data
+dim(USD)
+
+#Melihat struktur dataset
+str(USD)
+
+#Mengecek missing values
+sapply(USD, function(x) sum(is.na(x)))
+
+#Visualisasi missing values
+library("visdat")
+vis_miss (USD)
+
+#Analisis deskriptif
+summary(USD)
+```  
+
+```{r}
+is.ts(USD)
+```
+
+# Mengubah Dataset ke dalam Bentuk Data Time Series         
+```{r}
+USD[,-1]
+``` 
+
+```{r}
+t(USD[,-1])
+``` 
+
+```{r}
+as.numeric(t(USD[,-1]))
+``` 
+
+```{r}
+US_Dollar = as.numeric(t(USD[,-1]))
+``` 
+
+```{r}
+USD_TS = ts(US_Dollar, start = c(2018, 1), end = c(2023, 12), frequency = 12)    
+USD_TS  
+```   
+
+```{r}
+is.ts(USD_TS)
+```
+
+# Plot Time Series
+```{r}
+plot.ts(USD_TS)
+title(main="Plot Data Nilai Tukar Rupiah Terhadap USD") 
+```
+
+# Uji Stasioneritas
+# Cek stasioneritas terhadap ragam
+```{r}
+bc = BoxCox.lambda(USD_TS)                     
+bc
+```
+
+# Cek stasioneritas terhadap rata-rata/rataan 
+```{r}
+adf.test(USD_TS)  
+```
+
+# Plot ACF dan PACF
+```{r}
+acf2(USD_TS)
+``` 
+
+# Melakukan differencing terhadap tren
+# Differencing 1 kali 
+```{r}
+diff1.USD_TS = diff(USD_TS)
+plot.ts(diff1.USD_TS) 
+title(main="Plot Differencing 1 Kali")
+```
+
+```{r} 
+acf2(diff1.USD_TS)  
+```
+
+# DIfferencing 2 Kali
+```{r}
+diff2.USD_TS = diff(diff1.USD_TS)
+plot(diff2.USD_TS)
+title(main="Plot Differencing 2 Kali") 
+```
+
+# Cek stasioneritas terhadap rata-rata/rataan 
+```{r}
+adf.test(diff2.USD_TS)  
+```
+
+```{r}
+bc2 = BoxCox.lambda(diff1.USD_TS)                     
+bc2
+```
+
+```{r} 
+acf2(diff2.USD_TS) 
+```
+
+
+# Pemilihan Model ARIMA Terbaik Oleh Pemrograman R
+```{r} 
+library(forecast)
+model = auto.arima(USD_TS)
+model
+```
+
+```{r} 
+library(TSA)
+eacf(diff2.USD_TS) 
+``` 
+
+# Model ARIMA Pertama
+```{r} 
+# ARIMA (0,2,1) 
+USD_TS.ARIMA.0.2.1 = arima(USD_TS, order = c(0,2,1))
+USD_TS.ARIMA.0.2.1
+
+# ARIMA (0,2,2) 
+USD_TS.ARIMA.0.2.2 = arima(USD_TS, order = c(0,2,2))
+USD_TS.ARIMA.0.2.2
+
+# ARIMA (0,2,3)
+USD_TS.ARIMA.0.2.3 = arima(USD_TS, order = c(0,2,3))
+USD_TS.ARIMA.0.2.3 
+
+# ARIMA (0,2,4)
+USD_TS.ARIMA.0.2.4 = arima(USD_TS, order = c(0,2,4)) 
+USD_TS.ARIMA.0.2.4
+
+# ARIMA (0,2,5)
+USD_TS.ARIMA.0.2.5 = arima(USD_TS, order = c(0,2,5))
+USD_TS.ARIMA.0.2.5
+
+# ARIMA (0,2,9)
+USD_TS.ARIMA.0.2.9 = arima(USD_TS, order = c(0,2,9))
+USD_TS.ARIMA.0.2.9
+
+# ARIMA (0,2,10)
+USD_TS.ARIMA.0.2.10 = arima(USD_TS, order = c(0,2,10))
+USD_TS.ARIMA.0.2.10 
+
+# ARIMA (0,2,11)
+USD_TS.ARIMA.0.2.11 = arima(USD_TS, order = c(0,2,11))
+USD_TS.ARIMA.0.2.11
+
+# ARIMA (0,2,12)
+USD_TS.ARIMA.0.2.12 = arima(USD_TS, order = c(0,2,12))
+USD_TS.ARIMA.0.2.12
+
+# ARIMA (0,2,13)
+USD_TS.ARIMA.0.2.13 = arima(USD_TS, order = c(0,2,13))
+USD_TS.ARIMA.0.2.13 
+
+# ARIMA (1,2,1) 
+USD_TS.ARIMA.1.2.1 = arima(USD_TS, order = c(1,2,1))
+USD_TS.ARIMA.1.2.1
+
+# ARIMA (1,2,2) 
+USD_TS.ARIMA.1.2.2 = arima(USD_TS, order = c(1,2,2))
+USD_TS.ARIMA.1.2.2
+
+# ARIMA (1,2,3) 
+USD_TS.ARIMA.1.2.3 = arima(USD_TS, order = c(1,2,3))
+USD_TS.ARIMA.1.2.3
+
+# ARIMA (1,2,4)
+USD_TS.ARIMA.1.2.4 = arima(USD_TS, order = c(1,2,4))
+USD_TS.ARIMA.1.2.4
+
+# ARIMA (1,2,5)
+USD_TS.ARIMA.1.2.5 = arima(USD_TS, order = c(1,2,5))
+USD_TS.ARIMA.1.2.5
+
+# ARIMA (1,2,6) 
+USD_TS.ARIMA.1.2.6 = arima(USD_TS, order = c(1,2,6))
+USD_TS.ARIMA.1.2.6
+
+# ARIMA (1,2,7) 
+USD_TS.ARIMA.1.2.7 = arima(USD_TS, order = c(1,2,7))
+USD_TS.ARIMA.1.2.7
+
+# ARIMA (1,2,8) 
+USD_TS.ARIMA.1.2.8 = arima(USD_TS, order = c(1,2,8))
+USD_TS.ARIMA.1.2.8
+
+# ARIMA (1,2,9) 
+USD_TS.ARIMA.1.2.9 = arima(USD_TS, order = c(1,2,9))
+USD_TS.ARIMA.1.2.9
+
+# ARIMA (1,2,9) 
+USD_TS.ARIMA.1.2.9 = arima(USD_TS, order = c(1,2,9))
+USD_TS.ARIMA.1.2.9
+
+# ARIMA (1,2,10) 
+USD_TS.ARIMA.1.2.10 = arima(USD_TS, order = c(1,2,10))
+USD_TS.ARIMA.1.2.10
+
+# ARIMA (1,2,11) 
+USD_TS.ARIMA.1.2.11 = arima(USD_TS, order = c(1,2,11))
+USD_TS.ARIMA.1.2.11 
+
+# ARIMA (1,2,12) 
+USD_TS.ARIMA.1.2.12 = arima(USD_TS, order = c(1,2,12))
+USD_TS.ARIMA.1.2.12
+
+# ARIMA (1,2,13) 
+USD_TS.ARIMA.1.2.13 = arima(USD_TS, order = c(1,2,13))
+USD_TS.ARIMA.1.2.13 
+
+# ARIMA (2,2,3) 
+USD_TS.ARIMA.2.2.3 = arima(USD_TS, order = c(2,2,3))
+USD_TS.ARIMA.2.2.3 
+
+# ARIMA (2,2,4) 
+USD_TS.ARIMA.2.2.4 = arima(USD_TS, order = c(2,2,4))
+USD_TS.ARIMA.2.2.4
+```      
+
+# Uji Diagnostik Model ARIMA (1,2,2) 
+# Plot Residual Biasa
+```{r} 
+USD_TS.ARIMA.1.2.2 = arima(USD_TS, order = c(1,2,2))
+Res.USD_TS.ARIMA122 = residuals(USD_TS.ARIMA.1.2.2)
+plot(Res.USD_TS.ARIMA122, ylab = "Residual", type = "o")  
+abline(h=0, col = "red")
+```        
+
+# Plot Residual Terstandarkan
+```{r}
+Res.Std.USD_TS.ARIMA122 = rstandard(USD_TS.ARIMA.1.2.2)
+plot(Res.Std.USD_TS.ARIMA122, ylab ="Residual Terstandarkan", type = "o")
+abline(h = 0, col = "red")
+``` 
+
+# Plot Kuantil Kenormalan
+```{r}
+qqnorm(Res.USD_TS.ARIMA122)
+qqline(Res.USD_TS.ARIMA122)    
+```
+
+# Memeriksa fungsi autokorelasi sampel residual 
+```{r}
+#ACF Residual
+acf(Res.USD_TS.ARIMA122) 
+```
+
+# Pengujian Terhadap Magnitude Sebagai Grup 
+```{r}
+# Ljung - Box Statistik 
+tsdiag(USD_TS.ARIMA.1.2.2, gof.lag = 25)
+``` 
+
+```{r}
+# Prediksi
+forecast.USD_TS = predict(USD_TS.ARIMA.1.2.2, 24)
+forecast.USD_TS$pred
+```
