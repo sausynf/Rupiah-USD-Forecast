@@ -1,6 +1,6 @@
 ---
-title: "Tubes Time Series USD Januari 2018 - Desember 2023"
-author: "Gavrilla Claudia"
+title: "USD Time Series January 2018 - December 2023"
+author: "Sausan"
 date: "2024-06-04"
 output: html_document
 ---
@@ -16,7 +16,7 @@ library(TSA)
 ```{r}
 # IMPORT DATASET
 library(readxl)
-USD <- read_excel("C:/Users/LENOVO/Downloads/Data FIX.xlsx") 
+USD <- read_excel("C:/Users/LENOVO/Downloads/Data.xlsx") 
 USD
 ```
 
@@ -283,4 +283,5 @@ tsdiag(USD_TS.ARIMA.1.2.2, gof.lag = 25)
 # Prediksi
 forecast.USD_TS = predict(USD_TS.ARIMA.1.2.2, 24)
 forecast.USD_TS$pred
+
 ```
